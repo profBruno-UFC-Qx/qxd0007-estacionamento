@@ -21,13 +21,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Configurar JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Dar permissão de execução ao gradlew
+        run: chmod +x ./gradlew
+
       # Testes automatizados
       - name: Deve registrar entrada de carro
         id: registrar-entrada-carro
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve registrar entrada de carro
-          command: gradle test --tests 'EstacionamentoTest.deveRegistrarEntradaDeCarro'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarEntradaDeCarro'
           timeout: 10
           max-score: 5
 
@@ -36,7 +45,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve registrar entrada de moto e bike
-          command: gradle test --tests 'EstacionamentoTest.deveRegistrarEntradaDeMotoEBike'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarEntradaDeMotoEBike'
           timeout: 10
           max-score: 5
 
@@ -45,7 +54,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Não deve permitir veículos duplicados
-          command: gradle test --tests 'EstacionamentoTest.naoDevePermitirVeiculosDuplicados'
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirVeiculosDuplicados'
           timeout: 10
           max-score: 5
 
@@ -54,7 +63,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Não deve registrar entrada quando estacionamento lotado
-          command: gradle test --tests 'EstacionamentoTest.naoDeveRegistrarEntradaQuandoEstacionamentoLotado'
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDeveRegistrarEntradaQuandoEstacionamentoLotado'
           timeout: 10
           max-score: 5
 
@@ -63,7 +72,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve calcular valor de moto com mínimo de 3 reais
-          command: gradle test --tests 'EstacionamentoTest.deveCalcularValorDeMotoComMinimoDe3Reais'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeMotoComMinimoDe3Reais'
           timeout: 10
           max-score: 5
 
@@ -72,7 +81,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve calcular valor de carro com mínimo de 5 reais
-          command: gradle test --tests 'EstacionamentoTest.deveCalcularValorDeCarroComMinimoDe5Reais'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeCarroComMinimoDe5Reais'
           timeout: 10
           max-score: 5
 
@@ -81,7 +90,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve liberar vaga após pagamento
-          command: gradle test --tests 'EstacionamentoTest.deveLiberarVagaAposPagamento'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveLiberarVagaAposPagamento'
           timeout: 10
           max-score: 5
 
@@ -90,7 +99,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve listar veículos estacionados
-          command: gradle test --tests 'EstacionamentoTest.deveListarVeiculosEstacionados'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveListarVeiculosEstacionados'
           timeout: 10
           max-score: 5
 
@@ -99,7 +108,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve registrar saída e calcular valor corretamente
-          command: gradle test --tests 'EstacionamentoTest.deveRegistrarSaidaECalcularValorCorretamente'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarSaidaECalcularValorCorretamente'
           timeout: 10
           max-score: 5
 
@@ -108,7 +117,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Não deve permitir pagamento de ticket inexistente
-          command: gradle test --tests 'EstacionamentoTest.naoDevePermitirPagamentoDeTicketInexistente'
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirPagamentoDeTicketInexistente'
           timeout: 10
           max-score: 5
 
@@ -117,7 +126,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Não deve permitir registrar saída já paga
-          command: gradle test --tests 'EstacionamentoTest.naoDevePermitirRegistrarSaidaJaPago'
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirRegistrarSaidaJaPago'
           timeout: 10
           max-score: 5
 
@@ -126,7 +135,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve poder voltar após pagamento
-          command: gradle test --tests 'EstacionamentoTest.devePoderVoltarAposPagamento'
+          command: ./gradlew test --tests 'EstacionamentoTest.devePoderVoltarAposPagamento'
           timeout: 10
           max-score: 5
 
@@ -135,7 +144,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve calcular valor para bikes com permanência longa
-          command: gradle test --tests 'EstacionamentoTest.deveCalcularValorParaBikesComPermanenciaLonga'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaBikesComPermanenciaLonga'
           timeout: 10
           max-score: 5
 
@@ -144,7 +153,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve calcular valor para motos com permanência curta
-          command: gradle test --tests 'EstacionamentoTest.deveCalcularValorParaMotosComPermanenciaCurta'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaMotosComPermanenciaCurta'
           timeout: 10
           max-score: 5
 
@@ -153,7 +162,7 @@ jobs:
         uses: classroom-resources/autograding-command-grader@v1
         with:
           test-name: Deve impedir registrar entrada de veículos quando estacionamento lotado
-          command: gradle test --tests 'EstacionamentoTest.deveImpedirRegistrarEntradaDeVeiculosQuandoEstacionamentoLotado'
+          command: ./gradlew test --tests 'EstacionamentoTest.deveImpedirRegistrarEntradaDeVeiculosQuandoEstacionamentoLotado'
           timeout: 10
           max-score: 5
 
