@@ -16,14 +16,30 @@ public class Main {
     estacionamento.registrarEntrada(bike1);
 
     // Listar veículos
-    estacionamento.listarVeiculosEstacionados();
+    imprimirVeiculosEstacionados(estacionamento);
 
     // Pagar tickets
     estacionamento.registrarSaida("CAR001", LocalDateTime.now().plusMinutes(20));
     estacionamento.registrarSaida("MOTO001", LocalDateTime.now().plusHours(2));
-    estacionamento.registrarSaida("BIKE001", LocalDateTime.now().plusMinutes(5));
 
-    // Listar veículos novamente
-    estacionamento.listarVeiculosEstacionados();
+    // Valores pagos
+    for (String placa : new String[]{"CAR001", "MOTO001"}) {
+      Ticket ticket = estacionamento.getTicketBy(placa);
+      System.out.printf("%s pagou R$ %.2f%n", placa, ticket.getValorPago());
+    }
+
+    // Listar veículos novamente (apenas a bike continua estacionada)
+    imprimirVeiculosEstacionados(estacionamento);
+  }
+
+  private static void imprimirVeiculosEstacionados(Estacionamento estacionamento) {
+    System.out.println("Veículos estacionados:");
+    for (Veiculo veiculo : estacionamento.listarVeiculosEstacionados()) {
+      Ticket ticket = estacionamento.getTicketBy(veiculo.getIdentificador());
+      System.out.printf("- %s (%s) | entrada: %s%n",
+          veiculo.getIdentificador(),
+          veiculo.getClass().getSimpleName(),
+          ticket.getHoraEntrada());
+    }
   }
 }
