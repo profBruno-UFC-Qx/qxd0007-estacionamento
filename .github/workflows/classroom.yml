@@ -31,138 +31,264 @@ jobs:
         run: chmod +x ./gradlew
 
       # Testes automatizados
-      - name: Deve registrar entrada de carro
-        id: registrar-entrada-carro
+      - name: "Um estacionamento novo deve ter todas as vagas disponíveis"
+        id: deve-iniciar-com-todas-as-vagas-disponiveis
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve registrar entrada de carro
+          test-name: "Um estacionamento novo deve ter todas as vagas disponíveis"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveIniciarComTodasAsVagasDisponiveis'
+          timeout: 10
+          max-score: 5
+
+      - name: "Um tipo de vaga com capacidade 0 não deve aceitar veículos"
+        id: deve-recusar-entrada-quando-capacidade-zero
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Um tipo de vaga com capacidade 0 não deve aceitar veículos"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveRecusarEntradaQuandoCapacidadeZero'
+          timeout: 10
+          max-score: 5
+
+      - name: "Deve registrar a entrada de um carro ocupando uma vaga de carro"
+        id: deve-registrar-entrada-de-carro
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Deve registrar a entrada de um carro ocupando uma vaga de carro"
           command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarEntradaDeCarro'
           timeout: 10
           max-score: 5
 
-      - name: Deve registrar entrada de moto e bike
-        id: registrar-entrada-moto-bike
+      - name: "Moto e bike devem ocupar vagas de moto/bike"
+        id: deve-registrar-entrada-de-moto-e-bike
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve registrar entrada de moto e bike
+          test-name: "Moto e bike devem ocupar vagas de moto/bike"
           command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarEntradaDeMotoEBike'
           timeout: 10
           max-score: 5
 
-      - name: Não deve permitir veículos duplicados
-        id: nao-permitir-veiculos-duplicados
+      - name: "Ao entrar, o veículo deve receber um ticket não pago com o horário de entrada"
+        id: deve-gerar-ticket-na-entrada
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Não deve permitir veículos duplicados
+          test-name: "Ao entrar, o veículo deve receber um ticket não pago com o horário de entrada"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveGerarTicketNaEntrada'
+          timeout: 10
+          max-score: 5
+
+      - name: "Não deve permitir a entrada de um veículo que já está estacionado"
+        id: nao-deve-permitir-veiculos-duplicados
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Não deve permitir a entrada de um veículo que já está estacionado"
           command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirVeiculosDuplicados'
           timeout: 10
           max-score: 5
 
-      - name: Não deve registrar entrada quando estacionamento lotado
-        id: estacionamento-lotado
+      - name: "Não deve permitir a entrada de outro objeto com a mesma placa de um veículo estacionado"
+        id: nao-deve-permitir-placa-duplicada
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Não deve registrar entrada quando estacionamento lotado
+          test-name: "Não deve permitir a entrada de outro objeto com a mesma placa de um veículo estacionado"
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirPlacaDuplicada'
+          timeout: 10
+          max-score: 5
+
+      - name: "Não deve permitir a entrada de carro quando as vagas de carro estão lotadas"
+        id: nao-deve-registrar-entrada-quando-estacionamento-lotado
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Não deve permitir a entrada de carro quando as vagas de carro estão lotadas"
           command: ./gradlew test --tests 'EstacionamentoTest.naoDeveRegistrarEntradaQuandoEstacionamentoLotado'
           timeout: 10
           max-score: 5
 
-      - name: Deve calcular valor de moto com mínimo de 3 reais
-        id: calcular-valor-moto
+      - name: "Não deve permitir a entrada de moto quando as vagas de moto/bike estão lotadas"
+        id: deve-impedir-registrar-entrada-de-veiculos-quando-estacionamento-lotado
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve calcular valor de moto com mínimo de 3 reais
-          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeMotoComMinimoDe3Reais'
+          test-name: "Não deve permitir a entrada de moto quando as vagas de moto/bike estão lotadas"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveImpedirRegistrarEntradaDeVeiculosQuandoEstacionamentoLotado'
           timeout: 10
           max-score: 5
 
-      - name: Deve calcular valor de carro com mínimo de 5 reais
-        id: calcular-valor-carro
+      - name: "Motos e bikes devem disputar as mesmas vagas"
+        id: moto-e-bike-devem-compartilhar-vagas
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve calcular valor de carro com mínimo de 5 reais
-          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeCarroComMinimoDe5Reais'
+          test-name: "Motos e bikes devem disputar as mesmas vagas"
+          command: ./gradlew test --tests 'EstacionamentoTest.motoEBikeDevemCompartilharVagas'
           timeout: 10
           max-score: 5
 
-      - name: Deve liberar vaga após pagamento
-        id: liberar-vaga-pagamento
+      - name: "Lotar as vagas de carro não deve impedir a entrada de motos"
+        id: vagas-de-carro-e-moto-devem-ser-independentes
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve liberar vaga após pagamento
-          command: ./gradlew test --tests 'EstacionamentoTest.deveLiberarVagaAposPagamento'
+          test-name: "Lotar as vagas de carro não deve impedir a entrada de motos"
+          command: ./gradlew test --tests 'EstacionamentoTest.vagasDeCarroEMotoDevemSerIndependentes'
           timeout: 10
           max-score: 5
 
-      - name: Deve listar veículos estacionados
-        id: listar-veiculos
+      - name: "Ao sair, o ticket deve ser marcado como pago com o valor calculado"
+        id: deve-registrar-saida-e-calcular-valor-corretamente
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve listar veículos estacionados
-          command: ./gradlew test --tests 'EstacionamentoTest.deveListarVeiculosEstacionados'
-          timeout: 10
-          max-score: 5
-
-      - name: Deve registrar saída e calcular valor corretamente
-        id: registrar-saida-calculo
-        uses: classroom-resources/autograding-command-grader@v1
-        with:
-          test-name: Deve registrar saída e calcular valor corretamente
+          test-name: "Ao sair, o ticket deve ser marcado como pago com o valor calculado"
           command: ./gradlew test --tests 'EstacionamentoTest.deveRegistrarSaidaECalcularValorCorretamente'
           timeout: 10
           max-score: 5
 
-      - name: Não deve permitir pagamento de ticket inexistente
-        id: pagamento-ticket-inexistente
+      - name: "Ao sair, a vaga ocupada pelo veículo deve ser liberada"
+        id: deve-liberar-vaga-apos-pagamento
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Não deve permitir pagamento de ticket inexistente
+          test-name: "Ao sair, a vaga ocupada pelo veículo deve ser liberada"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveLiberarVagaAposPagamento'
+          timeout: 10
+          max-score: 5
+
+      - name: "Não deve permitir a saída de um veículo que não entrou"
+        id: nao-deve-permitir-pagamento-de-ticket-inexistente
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Não deve permitir a saída de um veículo que não entrou"
           command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirPagamentoDeTicketInexistente'
           timeout: 10
           max-score: 5
 
-      - name: Não deve permitir registrar saída já paga
-        id: nao-permitir-saida-paga
+      - name: "Não deve permitir registrar a saída de um ticket já pago"
+        id: nao-deve-permitir-registrar-saida-ja-pago
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Não deve permitir registrar saída já paga
+          test-name: "Não deve permitir registrar a saída de um ticket já pago"
           command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirRegistrarSaidaJaPago'
           timeout: 10
           max-score: 5
 
-      - name: Deve poder voltar após pagamento
-        id: poder-voltar-apos-pagamento
+      - name: "Não deve permitir registrar a saída com horário anterior à entrada"
+        id: nao-deve-permitir-saida-antes-da-entrada
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve poder voltar após pagamento
+          test-name: "Não deve permitir registrar a saída com horário anterior à entrada"
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDevePermitirSaidaAntesDaEntrada'
+          timeout: 10
+          max-score: 5
+
+      - name: "Um veículo pode voltar após sair, recebendo um novo ticket"
+        id: deve-poder-voltar-apos-pagamento
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Um veículo pode voltar após sair, recebendo um novo ticket"
           command: ./gradlew test --tests 'EstacionamentoTest.devePoderVoltarAposPagamento'
           timeout: 10
           max-score: 5
 
-      - name: Deve calcular valor para carros com permanência longa
-        id: calcular-valor-permanencia-longa
+      - name: "Carro: permanência curta paga o mínimo de R$ 5,00"
+        id: deve-calcular-valor-de-carro-com-minimo-de5-reais
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve calcular valor para bikes com permanência longa
-          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaBikesComPermanenciaLonga'
+          test-name: "Carro: permanência curta paga o mínimo de R$ 5,00"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeCarroComMinimoDe5Reais'
           timeout: 10
           max-score: 5
 
-      - name: Deve calcular valor para motos com permanência curta
-        id: calcular-valor-permanencia-curta
+      - name: "Carro: acima do mínimo, paga R$ 0,10 por minuto"
+        id: deve-calcular-valor-de-carro-por-minuto
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve calcular valor para motos com permanência curta
+          test-name: "Carro: acima do mínimo, paga R$ 0,10 por minuto"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeCarroPorMinuto'
+          timeout: 10
+          max-score: 5
+
+      - name: "Carro: fração de minuto é cobrada como minuto inteiro"
+        id: deve-cobrar-fracao-de-minuto-de-carro-como-minuto-inteiro
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Carro: fração de minuto é cobrada como minuto inteiro"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCobrarFracaoDeMinutoDeCarroComoMinutoInteiro'
+          timeout: 10
+          max-score: 5
+
+      - name: "Moto: 1 minuto de permanência paga o mínimo de R$ 3,00"
+        id: deve-calcular-valor-de-moto-com-minimo-de3-reais
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Moto: 1 minuto de permanência paga o mínimo de R$ 3,00"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeMotoComMinimoDe3Reais'
+          timeout: 10
+          max-score: 5
+
+      - name: "Moto: 30 minutos de permanência paga o mínimo de R$ 3,00"
+        id: deve-calcular-valor-para-motos-com-permanencia-curta
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Moto: 30 minutos de permanência paga o mínimo de R$ 3,00"
           command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaMotosComPermanenciaCurta'
           timeout: 10
           max-score: 5
 
-      - name: Deve impedir registrar entrada de veículos quando estacionamento lotado
-        id: impedir-entrada-lotado
+      - name: "Moto: acima do mínimo, paga R$ 0,05 por minuto"
+        id: deve-calcular-valor-de-moto-por-minuto
         uses: classroom-resources/autograding-command-grader@v1
         with:
-          test-name: Deve impedir registrar entrada de veículos quando estacionamento lotado
-          command: ./gradlew test --tests 'EstacionamentoTest.deveImpedirRegistrarEntradaDeVeiculosQuandoEstacionamentoLotado'
+          test-name: "Moto: acima do mínimo, paga R$ 0,05 por minuto"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorDeMotoPorMinuto'
+          timeout: 10
+          max-score: 5
+
+      - name: "Moto: fração de minuto é cobrada como minuto inteiro"
+        id: deve-cobrar-fracao-de-minuto-de-moto-como-minuto-inteiro
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Moto: fração de minuto é cobrada como minuto inteiro"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCobrarFracaoDeMinutoDeMotoComoMinutoInteiro'
+          timeout: 10
+          max-score: 5
+
+      - name: "Bike: paga R$ 3,00 fixo em uma permanência curta"
+        id: deve-calcular-valor-para-bikes-com-permanencia-curta
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Bike: paga R$ 3,00 fixo em uma permanência curta"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaBikesComPermanenciaCurta'
+          timeout: 10
+          max-score: 5
+
+      - name: "Bike: paga R$ 3,00 fixo em uma permanência longa"
+        id: deve-calcular-valor-para-bikes-com-permanencia-longa
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Bike: paga R$ 3,00 fixo em uma permanência longa"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveCalcularValorParaBikesComPermanenciaLonga'
+          timeout: 10
+          max-score: 5
+
+      - name: "Deve listar os veículos estacionados na ordem de entrada"
+        id: deve-listar-veiculos-estacionados
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Deve listar os veículos estacionados na ordem de entrada"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveListarVeiculosEstacionados'
+          timeout: 10
+          max-score: 5
+
+      - name: "Um estacionamento vazio deve retornar uma lista vazia (e não null)"
+        id: deve-listar-nenhum-veiculo-quando-vazio
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Um estacionamento vazio deve retornar uma lista vazia (e não null)"
+          command: ./gradlew test --tests 'EstacionamentoTest.deveListarNenhumVeiculoQuandoVazio'
+          timeout: 10
+          max-score: 5
+
+      - name: "Veículos que já saíram não devem aparecer na lista"
+        id: nao-deve-listar-veiculos-que-sairam
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Veículos que já saíram não devem aparecer na lista"
+          command: ./gradlew test --tests 'EstacionamentoTest.naoDeveListarVeiculosQueSairam'
           timeout: 10
           max-score: 5
 
@@ -170,20 +296,34 @@ jobs:
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          REGISTRAR-ENTRADA-CARRO_RESULTS: "${{steps.registrar-entrada-carro.outputs.result}}"
-          REGISTRAR-ENTRADA-MOTO-BIKE_RESULTS: "${{steps.registrar-entrada-moto-bike.outputs.result}}"
-          NAO-PERMITIR-VEICULOS-DUPLICADOS_RESULTS: "${{steps.nao-permitir-veiculos-duplicados.outputs.result}}"
-          ESTACIONAMENTO-LOTADO_RESULTS: "${{steps.estacionamento-lotado.outputs.result}}"
-          CALCULAR-VALOR-MOTO_RESULTS: "${{steps.calcular-valor-moto.outputs.result}}"
-          CALCULAR-VALOR-CARRO_RESULTS: "${{steps.calcular-valor-carro.outputs.result}}"
-          LIBERAR-VAGA-PAGAMENTO_RESULTS: "${{steps.liberar-vaga-pagamento.outputs.result}}"
-          LISTAR-VEICULOS_RESULTS: "${{steps.listar-veiculos.outputs.result}}"
-          REGISTRAR-SAIDA-CALCULO_RESULTS: "${{steps.registrar-saida-calculo.outputs.result}}"
-          PAGAMENTO-TICKET-INEXISTENTE_RESULTS: "${{steps.pagamento-ticket-inexistente.outputs.result}}"
-          NAO-PERMITIR-SAIDA-PAGA_RESULTS: "${{steps.nao-permitir-saida-paga.outputs.result}}"
-          PODER-VOLTAR-APOS-PAGAMENTO_RESULTS: "${{steps.poder-voltar-apos-pagamento.outputs.result}}"
-          CALCULAR-VALOR-PERMANENCIA-LONGA_RESULTS: "${{steps.calcular-valor-permanencia-longa.outputs.result}}"
-          CALCULAR-VALOR-PERMANENCIA-CURTA_RESULTS: "${{steps.calcular-valor-permanencia-curta.outputs.result}}"
-          IMPEDIR-ENTRADA-LOTADO_RESULTS: "${{steps.impedir-entrada-lotado.outputs.result}}"
+          DEVE-INICIAR-COM-TODAS-AS-VAGAS-DISPONIVEIS_RESULTS: "${{steps.deve-iniciar-com-todas-as-vagas-disponiveis.outputs.result}}"
+          DEVE-RECUSAR-ENTRADA-QUANDO-CAPACIDADE-ZERO_RESULTS: "${{steps.deve-recusar-entrada-quando-capacidade-zero.outputs.result}}"
+          DEVE-REGISTRAR-ENTRADA-DE-CARRO_RESULTS: "${{steps.deve-registrar-entrada-de-carro.outputs.result}}"
+          DEVE-REGISTRAR-ENTRADA-DE-MOTO-E-BIKE_RESULTS: "${{steps.deve-registrar-entrada-de-moto-e-bike.outputs.result}}"
+          DEVE-GERAR-TICKET-NA-ENTRADA_RESULTS: "${{steps.deve-gerar-ticket-na-entrada.outputs.result}}"
+          NAO-DEVE-PERMITIR-VEICULOS-DUPLICADOS_RESULTS: "${{steps.nao-deve-permitir-veiculos-duplicados.outputs.result}}"
+          NAO-DEVE-PERMITIR-PLACA-DUPLICADA_RESULTS: "${{steps.nao-deve-permitir-placa-duplicada.outputs.result}}"
+          NAO-DEVE-REGISTRAR-ENTRADA-QUANDO-ESTACIONAMENTO-LOTADO_RESULTS: "${{steps.nao-deve-registrar-entrada-quando-estacionamento-lotado.outputs.result}}"
+          DEVE-IMPEDIR-REGISTRAR-ENTRADA-DE-VEICULOS-QUANDO-ESTACIONAMENTO-LOTADO_RESULTS: "${{steps.deve-impedir-registrar-entrada-de-veiculos-quando-estacionamento-lotado.outputs.result}}"
+          MOTO-E-BIKE-DEVEM-COMPARTILHAR-VAGAS_RESULTS: "${{steps.moto-e-bike-devem-compartilhar-vagas.outputs.result}}"
+          VAGAS-DE-CARRO-E-MOTO-DEVEM-SER-INDEPENDENTES_RESULTS: "${{steps.vagas-de-carro-e-moto-devem-ser-independentes.outputs.result}}"
+          DEVE-REGISTRAR-SAIDA-E-CALCULAR-VALOR-CORRETAMENTE_RESULTS: "${{steps.deve-registrar-saida-e-calcular-valor-corretamente.outputs.result}}"
+          DEVE-LIBERAR-VAGA-APOS-PAGAMENTO_RESULTS: "${{steps.deve-liberar-vaga-apos-pagamento.outputs.result}}"
+          NAO-DEVE-PERMITIR-PAGAMENTO-DE-TICKET-INEXISTENTE_RESULTS: "${{steps.nao-deve-permitir-pagamento-de-ticket-inexistente.outputs.result}}"
+          NAO-DEVE-PERMITIR-REGISTRAR-SAIDA-JA-PAGO_RESULTS: "${{steps.nao-deve-permitir-registrar-saida-ja-pago.outputs.result}}"
+          NAO-DEVE-PERMITIR-SAIDA-ANTES-DA-ENTRADA_RESULTS: "${{steps.nao-deve-permitir-saida-antes-da-entrada.outputs.result}}"
+          DEVE-PODER-VOLTAR-APOS-PAGAMENTO_RESULTS: "${{steps.deve-poder-voltar-apos-pagamento.outputs.result}}"
+          DEVE-CALCULAR-VALOR-DE-CARRO-COM-MINIMO-DE5-REAIS_RESULTS: "${{steps.deve-calcular-valor-de-carro-com-minimo-de5-reais.outputs.result}}"
+          DEVE-CALCULAR-VALOR-DE-CARRO-POR-MINUTO_RESULTS: "${{steps.deve-calcular-valor-de-carro-por-minuto.outputs.result}}"
+          DEVE-COBRAR-FRACAO-DE-MINUTO-DE-CARRO-COMO-MINUTO-INTEIRO_RESULTS: "${{steps.deve-cobrar-fracao-de-minuto-de-carro-como-minuto-inteiro.outputs.result}}"
+          DEVE-CALCULAR-VALOR-DE-MOTO-COM-MINIMO-DE3-REAIS_RESULTS: "${{steps.deve-calcular-valor-de-moto-com-minimo-de3-reais.outputs.result}}"
+          DEVE-CALCULAR-VALOR-PARA-MOTOS-COM-PERMANENCIA-CURTA_RESULTS: "${{steps.deve-calcular-valor-para-motos-com-permanencia-curta.outputs.result}}"
+          DEVE-CALCULAR-VALOR-DE-MOTO-POR-MINUTO_RESULTS: "${{steps.deve-calcular-valor-de-moto-por-minuto.outputs.result}}"
+          DEVE-COBRAR-FRACAO-DE-MINUTO-DE-MOTO-COMO-MINUTO-INTEIRO_RESULTS: "${{steps.deve-cobrar-fracao-de-minuto-de-moto-como-minuto-inteiro.outputs.result}}"
+          DEVE-CALCULAR-VALOR-PARA-BIKES-COM-PERMANENCIA-CURTA_RESULTS: "${{steps.deve-calcular-valor-para-bikes-com-permanencia-curta.outputs.result}}"
+          DEVE-CALCULAR-VALOR-PARA-BIKES-COM-PERMANENCIA-LONGA_RESULTS: "${{steps.deve-calcular-valor-para-bikes-com-permanencia-longa.outputs.result}}"
+          DEVE-LISTAR-VEICULOS-ESTACIONADOS_RESULTS: "${{steps.deve-listar-veiculos-estacionados.outputs.result}}"
+          DEVE-LISTAR-NENHUM-VEICULO-QUANDO-VAZIO_RESULTS: "${{steps.deve-listar-nenhum-veiculo-quando-vazio.outputs.result}}"
+          NAO-DEVE-LISTAR-VEICULOS-QUE-SAIRAM_RESULTS: "${{steps.nao-deve-listar-veiculos-que-sairam.outputs.result}}"
         with:
-          runners: registrar-entrada-carro,registrar-entrada-moto-bike,nao-permitir-veiculos-duplicados,estacionamento-lotado,calcular-valor-moto,calcular-valor-carro,liberar-vaga-pagamento,listar-veiculos,registrar-saida-calculo,pagamento-ticket-inexistente,nao-permitir-saida-paga,poder-voltar-apos-pagamento,calcular-valor-permanencia-longa,calcular-valor-permanencia-curta,impedir-entrada-lotado
+          runners: deve-iniciar-com-todas-as-vagas-disponiveis,deve-recusar-entrada-quando-capacidade-zero,deve-registrar-entrada-de-carro,deve-registrar-entrada-de-moto-e-bike,deve-gerar-ticket-na-entrada,nao-deve-permitir-veiculos-duplicados,nao-deve-permitir-placa-duplicada,nao-deve-registrar-entrada-quando-estacionamento-lotado,deve-impedir-registrar-entrada-de-veiculos-quando-estacionamento-lotado,moto-e-bike-devem-compartilhar-vagas,vagas-de-carro-e-moto-devem-ser-independentes,deve-registrar-saida-e-calcular-valor-corretamente,deve-liberar-vaga-apos-pagamento,nao-deve-permitir-pagamento-de-ticket-inexistente,nao-deve-permitir-registrar-saida-ja-pago,nao-deve-permitir-saida-antes-da-entrada,deve-poder-voltar-apos-pagamento,deve-calcular-valor-de-carro-com-minimo-de5-reais,deve-calcular-valor-de-carro-por-minuto,deve-cobrar-fracao-de-minuto-de-carro-como-minuto-inteiro,deve-calcular-valor-de-moto-com-minimo-de3-reais,deve-calcular-valor-para-motos-com-permanencia-curta,deve-calcular-valor-de-moto-por-minuto,deve-cobrar-fracao-de-minuto-de-moto-como-minuto-inteiro,deve-calcular-valor-para-bikes-com-permanencia-curta,deve-calcular-valor-para-bikes-com-permanencia-longa,deve-listar-veiculos-estacionados,deve-listar-nenhum-veiculo-quando-vazio,nao-deve-listar-veiculos-que-sairam

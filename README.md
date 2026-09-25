@@ -17,12 +17,13 @@ Cada tipo de veículo tem uma forma diferente de calcular o valor a pagar, que d
 
 1. O sistema deve permitir a entrada de veículos, gerando um ticket associado ao veículo. O horário de entrada do ticket é o momento em que ele é criado.
 2. Cada veículo deve ser registrado com seu identificador único, a placa.
-3. O sistema deve verificar se há vagas disponíveis para o tipo de veículo:
+3. A quantidade de vagas de cada tipo é definida ao criar o estacionamento e pode ser zero (nesse caso, nenhum veículo daquele tipo pode entrar).
+4. O sistema deve verificar se há vagas disponíveis para o tipo de veículo:
    - Carro ocupa uma vaga de carro (`TipoVaga.CARRO`).
    - Moto e bike ocupam uma vaga de moto/bike (`TipoVaga.MOTO_E_BIKE`).
-4. Caso não haja vaga disponível para o tipo de veículo, a entrada deve ser recusada (`registrarEntrada` retorna `false`). Nesse caso, o sistema deve exibir uma mensagem indicando que o veículo não pode ser registrado devido à falta de vagas.
-5. Um veículo que já está estacionado não pode registrar uma nova entrada (`registrarEntrada` retorna `false`).
-6. Depois de sair, o mesmo veículo pode voltar a estacionar, recebendo um novo ticket.
+5. Caso não haja vaga disponível para o tipo de veículo, a entrada deve ser recusada (`registrarEntrada` retorna `false`). Nesse caso, o sistema deve exibir uma mensagem indicando que o veículo não pode ser registrado devido à falta de vagas.
+6. Um veículo que já está estacionado não pode registrar uma nova entrada (`registrarEntrada` retorna `false`).
+7. Depois de sair, o mesmo veículo pode voltar a estacionar, recebendo um novo ticket.
 
 ---
 
@@ -36,12 +37,13 @@ Cada tipo de veículo tem uma forma diferente de calcular o valor a pagar, que d
    4. A vaga ocupada pelo veículo é liberada.
 3. A saída deve ser recusada (`registrarSaida` retorna `false`) quando:
    - não existir ticket para a placa informada;
-   - o ticket da placa informada já tiver sido pago.
+   - o ticket da placa informada já tiver sido pago;
+   - o horário de saída informado for anterior ao horário de entrada. Nesse caso o ticket continua não pago e o veículo continua estacionado.
 
 ---
 
 ### ✅ Calcular Valor a Pagar
-Cada tipo de veículo tem sua própria regra de cálculo, aplicada sobre o tempo de permanência em minutos:
+Cada tipo de veículo tem sua própria regra de cálculo, aplicada sobre o tempo de permanência em minutos. Toda fração de minuto é cobrada como um minuto inteiro (por exemplo, 60 minutos e 1 segundo são cobrados como 61 minutos):
 
 | Tipo de Veículo | 	Regra de Cálculo           | Valor Mínimo |
 |---|-----------------------------|--------------|
